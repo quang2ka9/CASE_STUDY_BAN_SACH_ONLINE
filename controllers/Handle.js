@@ -13,25 +13,27 @@ class Handle extends BaseHandle{
 
     async showListUsers(req, res){
         let html = await this.getTemplate('./src/view/users/list.html');
-        let sql = 'SELECT id, name, username, email, role, phone FROM users';
-        let users = await this.querySQL(sql);
+        let sql = 'SELECT MaSach, TenSach, TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang FROM Sach';
+        let Sach = await this.querySQL(sql);
         let newHTML = '';
-        users.forEach((user, index) => {
+        Sach.forEach((sach, index) => {
             newHTML += '<tr>';
-            newHTML += `<td>${index + 1}</td>`;
-            newHTML += `<td>${user.name}</td>`;
-            newHTML += `<td>${user.username}</td>`;
-            newHTML += `<td>${user.email}</td>`;
-            newHTML += `<td>${(user.role == 1) ? 'admin' : 'user'}</td>`;
-            newHTML += `<td>${user.phone}</td>`;
+            newHTML += `<td>${sach.MaSach}</td>`;
+            newHTML += `<td>${sach.TenSach}</td>`;
+            newHTML += `<td>${sach.TacGia}</td>`;
+            newHTML += `<td>${sach.MaTheLoai}</td>`;
+            newHTML += `<td>${sach.MaNXB}</td>`;
+            newHTML += `<td>${sach.DonGiaBan}</td>`;
+            newHTML += `<td>${sach.SoLuong}</td>`;
+            newHTML += `<td>${sach.SoTrang}</td>`;
             newHTML += `<td>
-                            <a onclick="return confirm('Are you sure you want to delete this user?')" href="/admin/users/delete?id=${user.id}" class="btn btn-danger">Delete</a>
-                            <a href="/admin/users/update?id=${user.id}" class="btn btn-primary">Update</a>
+                            <a onclick="return confirm('Are you sure you want to delete this user?')" href="/admin/users/delete?id=${Sach.MaSach}" class="btn btn-danger">Delete</a>
+                            <a href="/admin/users/update?id=${sach.MaSach}" class="btn btn-primary">Update</a>
                         </td>`;
             newHTML += '</tr>';
         });
 
-        html = html.replace('{list-user}', newHTML)
+        html = html.replace('{list-sach}', newHTML)
         res.write(html)
 
         res.end();
@@ -39,8 +41,8 @@ class Handle extends BaseHandle{
 
     async deleteUser(req, res) {
         let query = url.parse(req.url).query;
-        let id = qs.parse(query).id;
-        let sql = 'DELETE FROM users WHERE id = ' + id;
+        let MaSach = qs.parse(query).MaSach;
+        let sql = 'DELETE FROM users WHERE MaSach = ' + MaSach;
         await this.querySQL(sql);
         res.writeHead(301, {Location: '/admin/users'});
         res.end();
@@ -60,7 +62,7 @@ class Handle extends BaseHandle{
         })
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `CALL addUser('${dataForm.name}','${dataForm.username}', '${dataForm.email}', '${dataForm.password}', '${dataForm.role}', '${dataForm.phone}', '${dataForm.address}')`
+            let sql = `CALL addSach('${dataForm.MaSach}','${dataForm.TenSach}', '${dataForm.TacGia}', '${dataForm.MaTheLoai}', '${dataForm.MaNXB}', '${dataForm.DonGiaBan}', '${dataForm.SoLuong}','${dataForm.SoTrang}' )`
             await this.querySQL(sql);
             res.writeHead(301, {Location: '/admin/users'});
             res.end();
@@ -69,39 +71,34 @@ class Handle extends BaseHandle{
 
     async showFormUpdateUser(req, res) {
         let html = await this.getTemplate('./src/view/users/update.html');
-        // thuc hien truy van
         let query = url.parse(req.url).query;
-        let id = qs.parse(query).id;
-        let sql = 'SELECT * FROM users WHERE id = ' + id;
+        let MaSach = qs.parse(query).MaSach;
+        let sql = 'SELECT * FROM users WHERE MaSach = ' + MaSach;
         let data = await this.querySQL(sql);
-        html = html.replace('{name}', data[0].name)
-        html = html.replace('{username}', data[0].username)
-        html = html.replace('{email}', data[0].email)
-        html = html.replace('{address}', data[0].address)
-        html = html.replace('{phone}', data[0].phone)
-        html = html.replace('{id}', data[0].id)
+        html = html.replace('{MaSach}', data[0].MaSach)
+        html = html.replace('{TenSach}', data[0].TenSach)
+        html = html.replace('{TacGia}', data[0].TacGia)
+        html = html.replace('{MaTheLoai}', data[0].MaTheLoai)
+        html = html.replace('{MaNXB}', data[0].MaNXB)
+        html = html.replace('{DonGiaBan}', data[0].DonGiaBan)
+        html = html.replace('{SoLuong}', data[0].SoLuong)
+        html = html.replace('{SoTrang}', data[0].SoTrang)
 
-        let  roleHTML = `
-            <option ${(data[0].role == 1) ? 'selected': ''} value="1">Admin</option>
-            <option ${(data[0].role == 2) ? 'selected' : ''} value="2">User</option>
-        `;
-
-        html = html.replace('{role}', roleHTML)
         res.write(html)
         res.end();
     }
 
     async updateUser(req, res) {
         let query = url.parse(req.url).query;
-        let id = qs.parse(query).id;
-        // lay du  lieu tu  form
+        let MaSach = qs.parse(query).MaSach;
+
         let data = '';
         req.on('data', chunk => {
             data += chunk
         })
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `CALL updateUser('${dataForm.name}','${dataForm.role}','${dataForm.address}', '${dataForm.phone}', '${id}')`
+            let sql = `CALL updateSach('${MaSach}','${dataForm.TenSach}', '${dataForm.TacGia}', '${dataForm.MaTheLoai}', '${dataForm.MaNXB}', '${dataForm.DonGiaBan}', '${dataForm.SoLuong}','${dataForm.SoTrang}')`
             await this.querySQL(sql);
             res.writeHead(301, {Location: '/admin/users'});
             res.end();
