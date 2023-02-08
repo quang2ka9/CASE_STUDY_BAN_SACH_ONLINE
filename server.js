@@ -15,8 +15,7 @@ const server = http.createServer((req, res) => {
             });
             break;
         case '/admin/users':
-            // kiem tra session
-            // lay  thong tin session tu cookie cua request
+
             let cookie = req.headers.cookie;
 
             let usernameLogin = qs.parse(cookie).u_user;
