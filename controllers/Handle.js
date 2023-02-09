@@ -10,8 +10,8 @@ class Handle extends BaseHandle{
         res.end();
     }
 
-    async showListUsers(req, res){
-        let html = await this.getTemplate('./src/views/users/list.html');
+    async showListbooks(req, res){
+        let html = await this.getTemplate('./src/views/books/list.html');
         let sql = 'SELECT MaSach, TenSach, TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang FROM Sach';
         let Sach = await this.querySQL(sql);
         let newHTML = '';
@@ -26,8 +26,8 @@ class Handle extends BaseHandle{
             newHTML += `<td>${sach.SoLuong}</td>`;
             newHTML += `<td>${sach.SoTrang}</td>`;
             newHTML += `<td>
-                            <a onclick=" return confirm('Are you sure you want to delete this user?')" href="/users/delete?MaSach=${sach.MaSach}" class="btn btn-danger">Delete</a>
-                            <a href="/users/update?MaSach=${sach.MaSach}" class="btn btn-primary">Update</a>
+                            <a onclick=" return confirm('Are you sure you want to delete this user?')" href="/books/delete?MaSach=${sach.MaSach}" class="btn btn-danger">Delete</a>
+                            <a href="/books/update?MaSach=${sach.MaSach}" class="btn btn-primary">Update</a>
                         </td>`;
             newHTML += '</tr>';
         });
@@ -44,13 +44,13 @@ class Handle extends BaseHandle{
         let MaSachs = qs.parse(query).MaSach;
         let sql = `DELETE FROM Sach WHERE MaSach = '${MaSachs}'` ;
         await this.querySQL(sql);
-        res.writeHead(301, {Location: '/users'});
+        res.writeHead(301, {Location: '/books'});
         console.log("success delete!!")
         res.end();
     }
 
     async showFormCreateUser(req, res) {
-        let html = await this.getTemplate('./src/views/users/add.html');
+        let html = await this.getTemplate('./src/views/books/add.html');
         res.write(html)
         res.end();
     }
@@ -65,13 +65,13 @@ class Handle extends BaseHandle{
             console.log(dataForm)
             let sql = `insert into Sach(MaSach, TenSach, TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang) value ('${dataForm.MaSach}','${dataForm.TenSach}','${dataForm.TacGia}','${dataForm.MaTheLoai}','${dataForm.MaNXB}','${dataForm.DonGiaBan}','${dataForm.SoLuong}','${dataForm.SoTrang}')`;
             await this.querySQL(sql);
-            res.writeHead(301, {Location: '/users'});
+            res.writeHead(301, {Location: '/books'});
             res.end();
         })
     }
 
     async showFormUpdateUser(req, res) {
-        let html = await this.getTemplate('./src/views/users/update.html');
+        let html = await this.getTemplate('./src/views/books/update.html');
         let query = url.parse(req.url).query;
         let MaSachs = qs.parse(query).MaSach;
         let sql = `SELECT * FROM Sach WHERE MaSach = '${MaSachs}'` ;
@@ -123,7 +123,7 @@ class Handle extends BaseHandle{
             let dataForm = qs.parse(data);
             let sql = `CALL updateSach('${MaSach}','${dataForm.TenSach}', '${dataForm.TacGia}', '${dataForm.MaTheLoai}', '${dataForm.MaNXB}', '${dataForm.DonGiaBan}', '${dataForm.SoLuong}','${dataForm.SoTrang}')`;
             await this.querySQL(sql);
-            res.writeHead(301, {Location: '/users'});
+            res.writeHead(301, {Location: '/books'});
             res.end();
         })
     }
@@ -141,7 +141,7 @@ class Handle extends BaseHandle{
     //     })
     //     req.on('end', async () => {
     //         let dataForm = qs.parse(data);
-    //         let sql = `SELECT name, username, email, phone, role FROM users WHERE username = '${dataForm.username}' AND password = '${dataForm.password}'`;
+    //         let sql = `SELECT name, username, email, phone, role FROM books WHERE username = '${dataForm.username}' AND password = '${dataForm.password}'`;
     //         let result = await this.querySQL(sql);
     //         if (result.length == 0) {
     //             res.writeHead(301, {Location: '/admin/login'})
@@ -156,7 +156,7 @@ class Handle extends BaseHandle{
     //
     //             res.setHeader('Set-Cookie','u_user=' + result[0].username);
     //
-    //             res.writeHead(301, {Location: '/admin/users'});
+    //             res.writeHead(301, {Location: '/admin/books'});
     //             return res.end()
     //
     //         }
