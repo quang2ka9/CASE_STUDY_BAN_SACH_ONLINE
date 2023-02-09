@@ -1,5 +1,5 @@
 const fs = require('fs');
-const connection = require("../models/data");
+const connection = require("../models/connection");
 class BaseHandle {
     async getTemplate(pathFile) {
         return new Promise((resolve, reject) => {

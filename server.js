@@ -1,6 +1,6 @@
 const http = require('http');
 const url = require('url');
-const Handler = require('./handles/Handle')
+const Handler = require('./controllers/Handle')
 const qs = require("qs");
 
 const server = http.createServer((req, res) => {
@@ -9,62 +9,65 @@ const server = http.createServer((req, res) => {
 
 
     switch (pathName) {
-        case '/admin':
+
+
+        case '/':
             Handler.showDashboard(req, res).catch(err => {
                 console.log(err.message)
             });
             break;
-        case '/admin/users':
+        case '/users':
 
-            let cookie = req.headers.cookie;
-
-            let usernameLogin = qs.parse(cookie).u_user;
-            if (!usernameLogin) {
-                res.writeHead(301, {Location: '/admin/login'})
-                return res.end();
-            }
+            // let cookie = req.headers.cookie;
+            //
+            // let usernameLogin = qs.parse(cookie).u_user;
+            // if (!usernameLogin) {
+            //     res.writeHead(301, {Location: '/admin/login'})
+            //     return res.end();
+            // }
 
             Handler.showListUsers(req, res).catch(err => {
-                console.log(err.message)
+                console.log(err)
             });
             break;
-        case '/admin/users/delete':
+
+        case '/users/delete':
             Handler.deleteUser(req, res).catch(err => {
-                console.log(err.message)
+                console.log(err)
             })
             break;
-        case '/admin/users/create':
+        case '/users/create':
 
             Handler.showFormCreateUser(req, res).catch(err => {
                 console.log(err.message)
             })
             break;
-        case '/admin/users/store':
+        case 'users/store':
             Handler.storeUser(req, res).catch(err => {
-                console.log(err.message)
+                console.log(err)
             })
             break;
-        case '/admin/users/update':
+        case '/users/update':
             Handler.showFormUpdateUser(req, res).catch(err => {
-                console.log(err.message)
+                console.log(err)
             })
             break;
-        case '/admin/users/edit':
+        case 'users/edit':
             Handler.updateUser(req, res).catch(err => {
-                console.log(err.message)
+                console.log(err)
             })
             break
-        case '/admin/login':
-            if (methodRequest == 'GET') {
-                Handler.showFormLogin(req, res).catch(err => {
-                    console.log(err.message)
-                })
-            } else {
-                Handler.login(req, res).catch(err => {
-                    console.log(err.message)
-                })
-            }
-            break
+        // case '/admin/login':
+        //     if (methodRequest == 'GET') {
+        //         Handler.showFormLogin(req, res).catch(err => {
+        //             console.log(err.message)
+        //         })
+        //     } else {
+        //         Handler.login(req, res).catch(err => {
+        //             console.log(err.message)
+        //         })
+        //     }
+        //     break
 
         default:
             res.end();
