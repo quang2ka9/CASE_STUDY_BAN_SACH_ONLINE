@@ -7,16 +7,13 @@ const server = http.createServer((req, res) => {
     const pathName = url.parse(req.url).pathname;
     const methodRequest = req.method;
 
-
     switch (pathName) {
-
-
         case '/':
             Handler.showDashboard(req, res).catch(err => {
                 console.log(err.message)
             });
             break;
-        case '/users':
+        case '/books':
 
             // let cookie = req.headers.cookie;
             //
@@ -26,33 +23,34 @@ const server = http.createServer((req, res) => {
             //     return res.end();
             // }
 
-            Handler.showListUsers(req, res).catch(err => {
+            Handler.showListbooks(req, res).catch(err => {
                 console.log(err)
             });
             break;
 
-        case '/users/delete':
+        case '/books/delete':
             Handler.deleteUser(req, res).catch(err => {
                 console.log(err)
             })
             break;
-        case '/users/create':
+        case '/books/create':
 
             Handler.showFormCreateUser(req, res).catch(err => {
                 console.log(err.message)
+
             })
             break;
-        case 'users/store':
+        case '/books/store':
             Handler.storeUser(req, res).catch(err => {
                 console.log(err)
             })
             break;
-        case '/users/update':
+        case '/books/update':
             Handler.showFormUpdateUser(req, res).catch(err => {
                 console.log(err)
             })
             break;
-        case 'users/edit':
+        case '/books/edit':
             Handler.updateUser(req, res).catch(err => {
                 console.log(err)
             })

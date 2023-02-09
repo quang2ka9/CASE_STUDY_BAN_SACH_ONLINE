@@ -10,8 +10,8 @@ class Handle extends BaseHandle{
         res.end();
     }
 
-    async showListUsers(req, res){
-        let html = await this.getTemplate('./src/views/users/list.html');
+    async showListbooks(req, res){
+        let html = await this.getTemplate('./src/views/books/list.html');
         let sql = 'SELECT MaSach, TenSach, TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang FROM Sach';
         let Sach = await this.querySQL(sql);
         let newHTML = '';
@@ -26,8 +26,8 @@ class Handle extends BaseHandle{
             newHTML += `<td>${sach.SoLuong}</td>`;
             newHTML += `<td>${sach.SoTrang}</td>`;
             newHTML += `<td>
-                            <a onclick=" confirm('Are you sure you want to delete this user?')" href="/users/delete?MaSach=${sach.MaSach}" class="btn btn-danger">Delete</a>
-                            <a href="/users/update?MaSach=${sach.MaSach}" class="btn btn-primary">Update</a>
+                            <a onclick=" return confirm('Are you sure you want to delete this user?')" href="/books/delete?MaSach=${sach.MaSach}" class="btn btn-danger">Delete</a>
+                            <a href="/books/update?MaSach=${sach.MaSach}" class="btn btn-primary">Update</a>
                         </td>`;
             newHTML += '</tr>';
         });
@@ -36,60 +36,78 @@ class Handle extends BaseHandle{
         res.write(html)
 
         res.end();
+
     }
 
     async deleteUser(req, res) {
-        console.log("da vao day")
         let query = url.parse(req.url).query;
         let MaSachs = qs.parse(query).MaSach;
         let sql = `DELETE FROM Sach WHERE MaSach = '${MaSachs}'` ;
-        await this.querySQL(sql).then((result)=> {
-            console.log(result)
-        }).catch((err)=> {
-            console.log(err)
-        })
-        ;
-        res.writeHead(301, {Location: '/users'});
+        await this.querySQL(sql);
+        res.writeHead(301, {Location: '/books'});
         console.log("success delete!!")
         res.end();
     }
 
     async showFormCreateUser(req, res) {
-        let html = await this.getTemplate('./src/views/users/add.html');
+        let html = await this.getTemplate('./src/views/books/add.html');
         res.write(html)
         res.end();
     }
 
     async storeUser(req, res) {
-
         let data = '';
         req.on('data', chunk => {
             data += chunk
         })
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `insert into Sach(MaSach,TenSach ,TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang ) value(${dataForm.MaSach},${dataForm.TenSach},${dataForm.TacGia},${dataForm.MaTheLoai},${dataForm.MaNXB},${dataForm.DonGiaBan},${dataForm.SoLuong},${dataForm.SoTrang})`
+            console.log(dataForm)
+            let sql = `insert into Sach(MaSach, TenSach, TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang) value ('${dataForm.MaSach}','${dataForm.TenSach}','${dataForm.TacGia}','${dataForm.MaTheLoai}','${dataForm.MaNXB}','${dataForm.DonGiaBan}','${dataForm.SoLuong}','${dataForm.SoTrang}')`;
             await this.querySQL(sql);
-            res.writeHead(301, {Location: '/users'});
+            res.writeHead(301, {Location: '/books'});
             res.end();
         })
     }
 
     async showFormUpdateUser(req, res) {
-        let html = await this.getTemplate('./src/views/users/update.html');
+        let html = await this.getTemplate('./src/views/books/update.html');
         let query = url.parse(req.url).query;
-        let MaSach = qs.parse(query).MaSach;
-        let sql = 'SELECT * FROM Sach WHERE MaSach = ' + MaSach;
+        let MaSachs = qs.parse(query).MaSach;
+        let sql = `SELECT * FROM Sach WHERE MaSach = '${MaSachs}'` ;
         let data = await this.querySQL(sql);
+        html = html.replace('{MaSach}', data[0].MaSach)
         html = html.replace('{TenSach}', data[0].TenSach)
         html = html.replace('{TacGia}', data[0].TacGia)
-        html = html.replace('{MaTheLoai}', data[0].MaTheLoai)
-        html = html.replace('{MaNXB}', data[0].MaNXB)
         html = html.replace('{DonGiaBan}', data[0].DonGiaBan)
         html = html.replace('{SoLuong}', data[0].SoLuong)
         html = html.replace('{SoTrang}', data[0].SoTrang)
 
-        res.write(html)
+
+         sql = `SELECT * FROM TheLoai` ;
+        let listTheLoai = await this.querySQL(sql);
+        let MaTheLoaiHTML = '';
+        listTheLoai.forEach(item => {
+            MaTheLoaiHTML += `
+            <option value="${item.MaTheLoai}">${item.TenTheLoai}</option>
+        `;
+        })
+
+        html = html.replace('{MaTheLoai}', MaTheLoaiHTML)
+
+
+        sql = `SELECT * FROM NhaXuatBan` ;
+        let listNhaXuatBan = await this.querySQL(sql);
+        let NhaXUatBanHTML = '';
+        listNhaXuatBan.forEach(item => {
+            NhaXUatBanHTML += `
+            <option value="${item.MaNXB}">${item.TenNXB}</option>
+        `;
+        })
+
+        html = html.replace('{MaNXB}', NhaXUatBanHTML)
+
+        res.write(html);
         res.end();
     }
 
@@ -103,9 +121,9 @@ class Handle extends BaseHandle{
         })
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `CALL updateSach('${MaSach}','${dataForm.TenSach}', '${dataForm.TacGia}', '${dataForm.MaTheLoai}', '${dataForm.MaNXB}', '${dataForm.DonGiaBan}', '${dataForm.SoLuong}','${dataForm.SoTrang}')`
+            let sql = `CALL updateSach('${MaSach}','${dataForm.TenSach}', '${dataForm.TacGia}', '${dataForm.MaTheLoai}', '${dataForm.MaNXB}', '${dataForm.DonGiaBan}', '${dataForm.SoLuong}','${dataForm.SoTrang}')`;
             await this.querySQL(sql);
-            res.writeHead(301, {Location: '/users'});
+            res.writeHead(301, {Location: '/books'});
             res.end();
         })
     }
@@ -123,7 +141,7 @@ class Handle extends BaseHandle{
     //     })
     //     req.on('end', async () => {
     //         let dataForm = qs.parse(data);
-    //         let sql = `SELECT name, username, email, phone, role FROM users WHERE username = '${dataForm.username}' AND password = '${dataForm.password}'`;
+    //         let sql = `SELECT name, username, email, phone, role FROM books WHERE username = '${dataForm.username}' AND password = '${dataForm.password}'`;
     //         let result = await this.querySQL(sql);
     //         if (result.length == 0) {
     //             res.writeHead(301, {Location: '/admin/login'})
@@ -138,7 +156,7 @@ class Handle extends BaseHandle{
     //
     //             res.setHeader('Set-Cookie','u_user=' + result[0].username);
     //
-    //             res.writeHead(301, {Location: '/admin/users'});
+    //             res.writeHead(301, {Location: '/admin/books'});
     //             return res.end()
     //
     //         }

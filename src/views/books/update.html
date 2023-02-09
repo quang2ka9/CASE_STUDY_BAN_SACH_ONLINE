@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+    <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
 <div class="container">
@@ -25,12 +25,13 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Add new</a></li>
                             <li><a class="dropdown-item" href="#">Show list</a></li>
+                            <li><a class="dropdown-item" href="#">Log Out</a></li>
                         </ul>
                     </li>
                 </ul>
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                        <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
         </div>
@@ -40,40 +41,43 @@
             Add new user
         </div>
         <div class="card-body">
-            <form method="post" action="/users/store">
+            <form method="post" action='/books/edit?MaSach={MaSach}'>
                 <div class="mb-3">
                     <label class="form-label">MaSach</label>
-                    <input type="text" class="form-control" id="MaSach" name="MaSach" aria-describedby="">
+                    <input required  type="text" value="{MaSach}" disabled class="form-control" name="MaSach" id="MaSach" aria-describedby="">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">TenSach</label>
-                    <input type="text" class="form-control" name="TenSach" id="TenSach" aria-describedby="">
+                    <input required type="text" value="{TenSach}" class="form-control" id="TenSach" name="TenSach" aria-describedby="">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">TacGia</label>
-                    <input type="text" class="form-control" name="TacGia" id="TacGia" aria-describedby="">
+                    <input required type="text" value="{TacGia}" class="form-control" id="TacGia" name="TacGia" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">MaTheLoai</label>
-                    <input type="text" class="form-control" name="MaTheLoai" id="MaTheLoai" aria-describedby="">
+                    <label for="" class="form-label">MaTheLoai</label>
+                    <select class="form-select" name="MaTheLoai" aria-label="Default select example">
+                        {MaTheLoai}
+                    </select>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">MaNXB</label>
-                    <input type="text" class="form-control" name="MaNXB" id="MaNXB" aria-describedby="">
+                    <label for="" class="form-label">MaNXB</label>
+                    <select class="form-select" name="MaNXB" aria-label="Default select example">
+                        {MaNXB}
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">DonGiaBan</label>
-                    <input type="text" class="form-control" name="DonGiaBan" id="DonGiaBan" aria-describedby="">
+                    <input required type="text" value="{DonGiaBan}" class="form-control" id="DonGiaBan" name="DonGiaBan" aria-describedby="">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">SoLuong</label>
-                    <input type="text" class="form-control" name="SoLuong" id="SoLuong" aria-describedby="">
+                    <input required type="text" value="{SoLuong}" class="form-control" id="SoLuong" name="SoLuong" aria-describedby="">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">SoTrang</label>
-                    <input type="text" class="form-control" name="SoTrang" id="SoTrang" aria-describedby="">
+                    <input required type="text" value="{SoTrang}" class="form-control" id="SoTrang" name="SoTrang" aria-describedby="">
                 </div>
-
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -83,11 +87,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-</body>
-</html>
-</title>
-</head>
-<body>
-
 </body>
 </html>
