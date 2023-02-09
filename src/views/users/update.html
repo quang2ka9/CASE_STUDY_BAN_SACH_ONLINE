@@ -44,7 +44,7 @@
             <form method="post" action='/users/edit?MaSach={MaSach}'>
                 <div class="mb-3">
                     <label class="form-label">MaSach</label>
-                    <input required type="text" value="{MaSach}" class="form-control" id="MaSach" name="MaSach" aria-describedby="">
+                    <input required  type="text" value="{MaSach}" disabled class="form-control" name="MaSach" id="MaSach" aria-describedby="">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">TenSach</label>
@@ -55,12 +55,16 @@
                     <input required type="text" value="{TacGia}" class="form-control" id="TacGia" name="TacGia" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">MaTheLoai</label>
-                    <input required type="text" value="{MaTheLoai}" class="form-control" id="MaTheLoai" name="MaTheLoai" aria-describedby="">
+                    <label for="" class="form-label">MaTheLoai</label>
+                    <select class="form-select" name="MaTheLoai" aria-label="Default select example">
+                        {MaTheLoai}
+                    </select>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">MaNXB</label>
-                    <input required type="text" value="{MaNXB}" class="form-control" id="MaNXB" name="MaNXB" aria-describedby="">
+                    <label for="" class="form-label">MaNXB</label>
+                    <select class="form-select" name="MaNXB" aria-label="Default select example">
+                        {MaNXB}
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">DonGiaBan</label>
@@ -74,7 +78,6 @@
                     <label class="form-label">SoTrang</label>
                     <input required type="text" value="{SoTrang}" class="form-control" id="SoTrang" name="SoTrang" aria-describedby="">
                 </div>
-
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

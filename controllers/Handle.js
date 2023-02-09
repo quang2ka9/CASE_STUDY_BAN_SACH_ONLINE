@@ -56,7 +56,6 @@ class Handle extends BaseHandle{
     }
 
     async storeUser(req, res) {
-        console.log("vao day")
         let data = '';
         req.on('data', chunk => {
             data += chunk
@@ -80,13 +79,35 @@ class Handle extends BaseHandle{
         html = html.replace('{MaSach}', data[0].MaSach)
         html = html.replace('{TenSach}', data[0].TenSach)
         html = html.replace('{TacGia}', data[0].TacGia)
-        html = html.replace('{MaTheLoai}', data[0].MaTheLoai)
-        html = html.replace('{MaNXB}', data[0].MaNXB)
         html = html.replace('{DonGiaBan}', data[0].DonGiaBan)
         html = html.replace('{SoLuong}', data[0].SoLuong)
         html = html.replace('{SoTrang}', data[0].SoTrang)
 
-        res.write(html)
+
+         sql = `SELECT * FROM TheLoai` ;
+        let listTheLoai = await this.querySQL(sql);
+        let MaTheLoaiHTML = '';
+        listTheLoai.forEach(item => {
+            MaTheLoaiHTML += `
+            <option value="${item.MaTheLoai}">${item.TenTheLoai}</option>
+        `;
+        })
+
+        html = html.replace('{MaTheLoai}', MaTheLoaiHTML)
+
+
+        sql = `SELECT * FROM NhaXuatBan` ;
+        let listNhaXuatBan = await this.querySQL(sql);
+        let NhaXUatBanHTML = '';
+        listNhaXuatBan.forEach(item => {
+            NhaXUatBanHTML += `
+            <option value="${item.MaNXB}">${item.TenNXB}</option>
+        `;
+        })
+
+        html = html.replace('{MaNXB}', NhaXUatBanHTML)
+
+        res.write(html);
         res.end();
     }
 
