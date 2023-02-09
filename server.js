@@ -7,10 +7,7 @@ const server = http.createServer((req, res) => {
     const pathName = url.parse(req.url).pathname;
     const methodRequest = req.method;
 
-
     switch (pathName) {
-
-
         case '/':
             Handler.showDashboard(req, res).catch(err => {
                 console.log(err.message)
@@ -40,9 +37,10 @@ const server = http.createServer((req, res) => {
 
             Handler.showFormCreateUser(req, res).catch(err => {
                 console.log(err.message)
+
             })
             break;
-        case 'users/store':
+        case '/users/store':
             Handler.storeUser(req, res).catch(err => {
                 console.log(err)
             })
@@ -52,7 +50,7 @@ const server = http.createServer((req, res) => {
                 console.log(err)
             })
             break;
-        case 'users/edit':
+        case '/users/edit':
             Handler.updateUser(req, res).catch(err => {
                 console.log(err)
             })

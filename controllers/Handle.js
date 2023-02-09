@@ -26,7 +26,7 @@ class Handle extends BaseHandle{
             newHTML += `<td>${sach.SoLuong}</td>`;
             newHTML += `<td>${sach.SoTrang}</td>`;
             newHTML += `<td>
-                            <a onclick=" confirm('Are you sure you want to delete this user?')" href="/users/delete?MaSach=${sach.MaSach}" class="btn btn-danger">Delete</a>
+                            <a onclick=" return confirm('Are you sure you want to delete this user?')" href="/users/delete?MaSach=${sach.MaSach}" class="btn btn-danger">Delete</a>
                             <a href="/users/update?MaSach=${sach.MaSach}" class="btn btn-primary">Update</a>
                         </td>`;
             newHTML += '</tr>';
@@ -36,19 +36,14 @@ class Handle extends BaseHandle{
         res.write(html)
 
         res.end();
+
     }
 
     async deleteUser(req, res) {
-        console.log("da vao day")
         let query = url.parse(req.url).query;
         let MaSachs = qs.parse(query).MaSach;
         let sql = `DELETE FROM Sach WHERE MaSach = '${MaSachs}'` ;
-        await this.querySQL(sql).then((result)=> {
-            console.log(result)
-        }).catch((err)=> {
-            console.log(err)
-        })
-        ;
+        await this.querySQL(sql);
         res.writeHead(301, {Location: '/users'});
         console.log("success delete!!")
         res.end();
@@ -61,14 +56,15 @@ class Handle extends BaseHandle{
     }
 
     async storeUser(req, res) {
-
+        console.log("vao day")
         let data = '';
         req.on('data', chunk => {
             data += chunk
         })
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `insert into Sach(MaSach,TenSach ,TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang ) value(${dataForm.MaSach},${dataForm.TenSach},${dataForm.TacGia},${dataForm.MaTheLoai},${dataForm.MaNXB},${dataForm.DonGiaBan},${dataForm.SoLuong},${dataForm.SoTrang})`
+            console.log(dataForm)
+            let sql = `insert into Sach(MaSach, TenSach, TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang) value ('${dataForm.MaSach}','${dataForm.TenSach}','${dataForm.TacGia}','${dataForm.MaTheLoai}','${dataForm.MaNXB}','${dataForm.DonGiaBan}','${dataForm.SoLuong}','${dataForm.SoTrang}')`;
             await this.querySQL(sql);
             res.writeHead(301, {Location: '/users'});
             res.end();
@@ -78,9 +74,10 @@ class Handle extends BaseHandle{
     async showFormUpdateUser(req, res) {
         let html = await this.getTemplate('./src/views/users/update.html');
         let query = url.parse(req.url).query;
-        let MaSach = qs.parse(query).MaSach;
-        let sql = 'SELECT * FROM Sach WHERE MaSach = ' + MaSach;
+        let MaSachs = qs.parse(query).MaSach;
+        let sql = `SELECT * FROM Sach WHERE MaSach = '${MaSachs}'` ;
         let data = await this.querySQL(sql);
+        html = html.replace('{MaSach}', data[0].MaSach)
         html = html.replace('{TenSach}', data[0].TenSach)
         html = html.replace('{TacGia}', data[0].TacGia)
         html = html.replace('{MaTheLoai}', data[0].MaTheLoai)
@@ -103,7 +100,7 @@ class Handle extends BaseHandle{
         })
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `CALL updateSach('${MaSach}','${dataForm.TenSach}', '${dataForm.TacGia}', '${dataForm.MaTheLoai}', '${dataForm.MaNXB}', '${dataForm.DonGiaBan}', '${dataForm.SoLuong}','${dataForm.SoTrang}')`
+            let sql = `CALL updateSach('${MaSach}','${dataForm.TenSach}', '${dataForm.TacGia}', '${dataForm.MaTheLoai}', '${dataForm.MaNXB}', '${dataForm.DonGiaBan}', '${dataForm.SoLuong}','${dataForm.SoTrang}')`;
             await this.querySQL(sql);
             res.writeHead(301, {Location: '/users'});
             res.end();
