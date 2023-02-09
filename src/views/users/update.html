@@ -18,9 +18,6 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             User manager
@@ -29,9 +26,6 @@
                             <li><a class="dropdown-item" href="#">Add new</a></li>
                             <li><a class="dropdown-item" href="#">Show list</a></li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                     </li>
                 </ul>
                 <form class="d-flex">
@@ -46,36 +40,40 @@
             Add new user
         </div>
         <div class="card-body">
-            <form method="post" action='/admin/users/edit?id={id}'>
+            <form method="post" action='/users/edit?MaSach={MaSach}'>
                 <div class="mb-3">
-                    <label class="form-label">Name</label>
-                    <input required type="text" value="{name}" class="form-control" id="name" name="name" aria-describedby="">
+                    <label class="form-label">MaSach</label>
+                    <input required type="text" value="{MaSach}" class="form-control" id="MaSach" name="MaSach" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <input required  type="text" value="{username}" disabled class="form-control" name="username" id="username" aria-describedby="">
+                    <label class="form-label">TenSach</label>
+                    <input required type="text" value="{TenSach}" class="form-control" id="TenSach" name="TenSach" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email address</label>
-                    <input required type="email" disabled value="{email}" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <label class="form-label">TacGia</label>
+                    <input required type="text" value="{TacGia}" class="form-control" id="TacGia" name="TacGia" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">Role</label>
-                    <select class="form-select" name="role" aria-label="Default select example">
-                        {role}
-                    </select>
+                    <label class="form-label">MaTheLoai</label>
+                    <input required type="text" value="{MaTheLoai}" class="form-control" id="MaTheLoai" name="MaTheLoai" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">Address</label>
-                    <div class="form-floating">
-                        <textarea name="address" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px">{address}</textarea>
-                        <label for="floatingTextarea2">Address</label>
-                    </div>
+                    <label class="form-label">MaNXB</label>
+                    <input required type="text" value="{MaNXB}" class="form-control" id="MaNXB" name="MaNXB" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">Phone</label>
-                    <input type="text" value="{phone}" class="form-control" name="phone" id="">
+                    <label class="form-label">DonGiaBan</label>
+                    <input required type="text" value="{DonGiaBan}" class="form-control" id="DonGiaBan" name="DonGiaBan" aria-describedby="">
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">SoLuong</label>
+                    <input required type="text" value="{SoLuong}" class="form-control" id="SoLuong" name="SoLuong" aria-describedby="">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">SoTrang</label>
+                    <input required type="text" value="{SoTrang}" class="form-control" id="SoTrang" name="SoTrang" aria-describedby="">
+                </div>
+
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
