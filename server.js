@@ -1,7 +1,8 @@
 const http = require('http');
 const url = require('url');
-const Handler = require('./controllers/Handle')
+const Handler = require('./controllers/handle/Handle');
 const qs = require("qs");
+
 
 const server = http.createServer((req, res) => {
     const pathName = url.parse(req.url).pathname;
@@ -15,57 +16,73 @@ const server = http.createServer((req, res) => {
             break;
         case '/books':
 
-            // let cookie = req.headers.cookie;
-            //
-            // let usernameLogin = qs.parse(cookie).u_user;
-            // if (!usernameLogin) {
-            //     res.writeHead(301, {Location: '/admin/login'})
-            //     return res.end();
-            // }
+            let cookie = req.headers.cookie;
 
-            Handler.showListbooks(req, res).catch(err => {
+            let usernameLogin = qs.parse(cookie).u_user;
+            if (!usernameLogin) {
+                res.writeHead(301, {Location: '/books/login'})
+                return res.end();
+            }
+
+            Handler.showListBooks(req, res).catch(err => {
                 console.log(err)
             });
             break;
 
         case '/books/delete':
-            Handler.deleteUser(req, res).catch(err => {
+            Handler.deleteBooks(req, res).catch(err => {
                 console.log(err)
             })
             break;
         case '/books/create':
 
-            Handler.showFormCreateUser(req, res).catch(err => {
+            Handler.showFormCreateBooks(req, res).catch(err => {
                 console.log(err.message)
 
             })
             break;
         case '/books/store':
-            Handler.storeUser(req, res).catch(err => {
+            Handler.storeBooks(req, res).catch(err => {
                 console.log(err)
             })
             break;
         case '/books/update':
-            Handler.showFormUpdateUser(req, res).catch(err => {
+            Handler.showFormUpdateBooks(req, res).catch(err => {
                 console.log(err)
             })
             break;
         case '/books/edit':
-            Handler.updateUser(req, res).catch(err => {
+            Handler.updateBooks(req, res).catch(err => {
                 console.log(err)
             })
-            break
-        // case '/admin/login':
-        //     if (methodRequest == 'GET') {
-        //         Handler.showFormLogin(req, res).catch(err => {
-        //             console.log(err.message)
-        //         })
-        //     } else {
-        //         Handler.login(req, res).catch(err => {
-        //             console.log(err.message)
-        //         })
-        //     }
-        //     break
+            break;
+        case '/books/search':
+            Handler.searchBooks(req, res).catch(err => {
+                console.log(err)
+            })
+            break;
+        case '/books/client':
+            Handler.ShowAllBook(req, res).catch(err => {
+                console.log(err)
+            })
+            break;
+        case '/books/login':
+            if (methodRequest == 'GET') {
+                Handler.showFormLogin(req, res).catch(err => {
+                    console.log(err.message)
+                })
+            } else {
+                Handler.login(req, res).catch(err => {
+                    console.log(err.message)
+                })
+            }
+            break;
+
+        case '/loginAdmin':
+            Handler.loginAdmin(req,res).catch(err => {
+                console.log(err);
+            })
+            break;
 
         default:
             res.end();
