@@ -29,8 +29,8 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="d-flex"  method="post" action="/books/search">
+                    <input id= "search" class="form-control me-2" type="search" name="search" placeholder="search" aria-label="search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
@@ -38,26 +38,25 @@
     </nav>
     <div class="card">
         <div class="card-header">
-            User list
+            Add New Books
             <a href="/books/create" class="btn btn-success">+</a>
         </div>
         <div class="card-body">
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">MaSach</th>
-                    <th scope="col">TenSach</th>
-                    <th scope="col">TacGia</th>
-                    <th scope="col">MaTheLoai</th>
-                    <th scope="col">MaNXB</th>
-                    <th scope="col">DonGiaBan</th>
-                    <th scope="col">SoLuong</th>
-                    <th scope="col">SoTrang</th>
+                    <th scope="col">BookCode</th>
+                    <th scope="col">BookName</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">CategoryCode</th>
+                    <th scope="col">UnitPrice</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">img</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                {list-sach}
+                {list-book}
                 </tbody>
             </table>
         </div>

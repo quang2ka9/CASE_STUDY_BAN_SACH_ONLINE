@@ -2,50 +2,365 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial;
+            padding: 10px;
+            background: pink;
+        }
+
+        /* Tạo kiểu cho Tiêu đề */
+        .header {
+            padding: 30px;
+            text-align: center;
+            background: white;
+        }
+
+        .header h1 {
+            font-size: 50px;
+        }
+
+        /*Tạo kiểu cho thanh điều hướng */
+        .topnav {
+            overflow: hidden;
+            background-color: #606468;
+        }
+
+        /* Tạo kiểu cho liên kết */
+        .topnav a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        /* đổi màu khi di chuột qua */
+        .topnav a:hover {
+            background-color: gray;
+            color: black;
+        }
+
+        /* Tạo hai cột nằm cạnh nhau */
+        /* cột bên trái */
+        .leftcolumn {
+            float: left;
+            width: 75%;
+        }
+
+        /* cột bên phải */
+        .rightcolumn {
+            float: left;
+            width: 25%;
+            background-color: #606468;
+            padding-left: 20px;
+        }
+
+        /* hình ảnh */
+        .fakeimg {
+
+            background-color: white;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /*Thêm hiệu ứng thẻ cho bài viết*/
+        .card {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* xóa các phần tử nổi sau các cột */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* chân trang */
+        .footer {
+            padding: 20px;
+            text-align: center;
+            background: #ddd;
+            margin-top: 20px;
+        }
+
+        /* Bố cục đáp ứng - khi màn hình có chiều rộng dưới 800px, đặt hai cột chồng lên nhau thay vì cạnh nhau */
+        @media screen and (max-width: 800px) {
+            .leftcolumn, .rightcolumn {
+                width: 100%;
+                padding: 0;
+            }
+        }
+
+        /* Tạo ba cột  nằm cạnh nhau */
+        .column {
+            float: left;
+        }
+
+        /* cột trái và phải */
+        .column.side {
+            width: 25%;
+        }
+
+        /* cột giữa */
+        .column.middle {
+            width: 50%;
+        }
+
+        /* xóa các phần tử nổi sau các cột */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        h5 {
+            color: red;
+        }
+
+        .home {
+            color: #fff;
+            position: absolute;
+
+        }
+
+
+        /* Bố cục đáp ứng - khi màn hình rộng dưới 400px, đặt các liên kết điều hướng chồng lên nhau thay vì cạnh nhau */
+        @media screen and (max-width: 400px) {
+            .topnav a {
+                float: none;
+                width: 100%;
+            }
+        }
+
+        .navbar {
+            margin: auto !important;
+            width: 100%;
+        }
+
+        .content__card {
+            display: flex;
+
+        }
+
+        .content__img {
+            display: flex;
+        }
+
+        a.nav-link {
+            color: white;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            User manager
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Add new</a></li>
-                            <li><a class="dropdown-item" href="#">Show list</a></li>
-                            <li><a class="dropdown-item" href="#">Log Out</a></li>
+<div class="main">
+    <div class="header">
+        <h1 class="home">BOOK WORDL</h1> <img
+            src="https://anybooks.vn/uploads/images/sach-la-gi-phuong-phap-doc-sach-hieu-qua-nhat-1.jpeg"
+            style="width: 100%">
+    </div>
+    <nav class="navbar navbar-expand-sm" style="background: #C71585;position: sticky;top: 0; z-index: 9999">
 
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link " href="/signup">Sign Up User</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login User</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/loginAdmin">Login Admin</a>
+            </li>
+        </ul>
+
+        <!-- Navbar text-->
+        <span class="navbar-text">
+  </span>
+
+    </nav>
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            <div class="nav-icon">
+                <div class="col-3">a</div>
+                <div class="col-3">b</div>
+                <div class="col-2">c</div>
+                <div class="col-4">c</div>
             </div>
         </div>
-    </nav>
-</div>
+    </div>
+    <div class="content">
+        <div class="content__card">
+            <div class="card col-9" style="margin-right:5px">
+                <h3>WHAT IS BOOK?</h3>
+                <h5>Understand simply </h5>
+                <p>-Books are the intellectual product of human beings, accumulated through practical knowledge,
+                    cultures and histories of peoples in the world, this is a tool to demonstrate the achievements of
+                    mankind. during its formation and development.</p>
+                <p>-Books are spiritual food, bringing relaxation, comfort, inspiration to readers, helping them feel
+                    comfortable after the pressures of life.</p>
+                <p>-Books are a place to store invaluable sources of human knowledge from generation to generation.</p>
+                <p>-Books are a place to store invaluable sources of human knowledge from generation to generation.</p>
+                <p>
+                    <img src="https://chongiadung.net/wp-content/uploads/2021/04/thinh_Sach-la-gi-Y-nghia-cua-sach-va-tac-dung-cua-sach-2.jpg"
+                         width="700"></p>
+                <h3>BENEFITS OF READING ONLY</h3>
+                <br>
+                <p>-Improve knowledge</p>
+                <p>-Improve concentration and strengthen thinking and analytical skills</p>
+                <p>-Vocabulary is expanded through reading books</p>
+                <p>-Improve memory</p>
+                <p>-Reading is a form of entertainment, reducing stress</p>
+                <p>-Control your emotions</p>
+                <p> -Improve your writing skills</p>
+                <p> <img src="https://giatricuocsong.org/wp-content/uploads/2021/07/loi-ich-cua-viec-doc-sach.jpg" width="700"></p>
+            </div>
+            <div class="card col-3">
+                <div class="cart__content">
+                    <div>
+                        <h3>To Me</h3>
+                        <p>Books are very useful for me and bring me joy</p>
+                        <div class="fakeimg"><p><img style="width: 200px"
+                                                     src="https://cafefcdn.com/thumb_w/650/2016/e823a698a5f812514bb7d63e881cb7e6-1477827061076-522-0-1022-800-crop-1477827175559-1477878566907.jpg"
+                                                     alt=""></p></div>
+                        <div class="fakeimg"><p><img style="width: 200px"
+                                                     src="https://zicxa.com/pub/media/content/21-loi-ich-cua-viec-doc-sach_1.jpg"
+                                                     alt=""></p></div>
+                        <div class="fakeimg"><p><img style="width: 200px"
+                                                     src="https://vcdn1-giadinh.vnecdn.net/2023/01/17/Doc-sach-4530-1673928639.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=fKvaMMPyaI-rNhUpJOUguQ"
+                                                     alt=""></p></div>
+                    </div>
+                </div>
+                <hr>
+                <div class="cart__content">
+                    <div>
+                        <h3>COMMENT</h3>
+                        <p>Nguyễn Thị A: Truyện hay 10đ</p>
+                        <p>Nguyễn Thi B: Truyện rất xúc động, khóc huhu</p>
+                        <p>Nguyễn Thị C: Đọc miễn phí nên rất hay nhé </p>
+                    </div>
+                </div>
+                <hr>
+                <div class="cart__content">
+                    <div>
+                        <h3>
+                            Evaluate</h3>
+                        <div class="fakeimg"><p><img src="https://static.vecteezy.com/system/resources/thumbnails/004/256/658/small/five-star-customer-product-ratings-review-flat-icons-for-apps-and-websites-illustration-of-five-golden-yellow-stars-in-a-row-isolated-in-a-white-background-concepts-for-ratings-customers-review-free-vector.jpg"width="100"></p></div>
+                        <div class="fakeimg"><p><img src="https://static.vecteezy.com/system/resources/thumbnails/004/256/658/small/five-star-customer-product-ratings-review-flat-icons-for-apps-and-websites-illustration-of-five-golden-yellow-stars-in-a-row-isolated-in-a-white-background-concepts-for-ratings-customers-review-free-vector.jpg"width="100"></p></div>
+                        <div class="fakeimg"><p><img src="https://static.vecteezy.com/system/resources/thumbnails/004/256/658/small/five-star-customer-product-ratings-review-flat-icons-for-apps-and-websites-illustration-of-five-golden-yellow-stars-in-a-row-isolated-in-a-white-background-concepts-for-ratings-customers-review-free-vector.jpg"width="100"></p></div>
+                    </div>
+                </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+            </div>
+        </div>
+        <div class="content__img">
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="https://cdnmedia.baotintuc.vn/2016/05/31/22/51/nhungngoisaotrenbautroithanhphobiafinal.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-text">
+                            The stars in the sky of the city</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="https://images.careerbuilder.vn/content/news/20131017/2013_10_17%20-%20chuyen%20con%20meo%20day%20hai%20au%20bay.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-text">The story of cats teaching seagulls to fly</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="https://sachhay24h.com/uploads/images/truyen-co-tich-1.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-text">Grimm's Fairy Tales</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content__img">
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="https://salt.tikicdn.com/cache/280x280/ts/product/c5/3f/9b/231139a300c4a1d120c619b860da1449.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-text">Close your eyes and open the window</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="https://salt.tikicdn.com/cache/280x280/ts/product/2b/fd/60/96a7a7b9b2a7fac4cc1600918c59b8cf.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-text">
+                            Little Prince</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="https://salt.tikicdn.com/cache/280x280/ts/product/a0/71/49/437d69f8d5c7f902011bc7de67a6c14a.jpg">
+                    <div class="card-body">
+                        <h5 class="card-text">
+                            World fairy tales</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="row">
+                <div class="column side">
+                    <h2>Side</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit..</p>
+                </div>
+
+                <div class="column middle">
+                    <h2>Main Content</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus
+                        venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus
+                        eget
+                        aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque
+                        tortor sed accumsan convallis.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus
+                        venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus
+                        eget
+                        aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque
+                        tortor sed accumsan convallis.</p>
+                </div>
+
+                <div class="column side">
+                    <h2>Side</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit..</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -29,8 +29,8 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input  class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="d-flex" >
+                    <input id= "search" class="form-control me-2" type="search" name="search" placeholder="search" aria-label="search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
@@ -38,59 +38,34 @@
     </nav>
     <div class="card">
         <div class="card-header">
-            Add new user
+            Cart
+            <a href="" class="btn btn-success">+</a>
+
         </div>
         <div class="card-body">
-            <form method="post" action="/books/store">
-                <div class="mb-3">
-                    <label class="form-label">BookCode</label>
-                    <input type="text" class="form-control" id="BookCode" name="BookCode" aria-describedby="">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">BookName</label>
-                    <input type="text" class="form-control" name="BookName" id="BookName" aria-describedby="">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Author</label>
-                    <input type="text" class="form-control" name="Author" id="Author" aria-describedby="">
-                </div>
-                <div class="mb-3">
-                    <label for="" class="form-label">CategoryCode</label>
-                    <select class="form-select" name="CategoryCode" aria-label="Default select example">
-                        <option value="TL01">Bí quyết Cuộc sống</option>
-                        <option value="TL02">Sách Tin học</option>
-                        <option value="TL03">Thể Thao, Du lịch</option>
-                        <option value="TL04">Văn hóa, Nghệ thuật</option>
-                        <option value="TL05">Sách Kinh doanh</option>
-                        <option value="TL06">Sách Khuyến mại, Sách mới phát hành</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label"> UnitPrice</label>
-                    <input type="number" class="form-control" name="UnitPrice" id="UnitPrice" aria-describedby="">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Quantity</label>
-                    <input type="number" class="form-control" name="Quantity" id="Quantity" aria-describedby="">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">img</label>
-                    <input type="text" class="form-control" name="img" id="img" aria-describedby="">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-
-            </form>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">MaSach</th>
+                    <th scope="col">TenSach</th>
+                    <th scope="col">TacGia</th>
+                    <th scope="col">MaTheLoai</th>
+                    <th scope="col">MaNXB</th>
+                    <th scope="col">DonGiaBan</th>
+                    <th scope="col">SoLuong</th>
+                    <th scope="col">SoTrang</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {list-sach}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-</body>
-</html>
-</title>
-</head>
-<body>
-
 </body>
 </html>
