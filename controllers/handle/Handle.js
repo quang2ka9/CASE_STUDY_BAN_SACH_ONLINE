@@ -8,7 +8,7 @@ const cookie = require('cookie');
 
 class Handle extends BaseHandle {
     async showDashboard(req, res) {
-        let html = await this.getTemplate('./src/dashboard.html');
+        let html = await this.getTemplate('./src/home.html');
         res.write(html)
         res.end();
     }
@@ -126,7 +126,7 @@ class Handle extends BaseHandle {
     };
 
     async ShowAllBook(req, res) {
-        let html = await this.getTemplate('./src/views/users/client.html');
+        let html = await this.getTemplate('./src/views/books/client.html');
         let sql = 'SELECT BookCode, BookName, Author, CategoryCode, UnitPrice, Quantity, img FROM Book';
         let Book = await this.querySQL(sql);
         let newHTML = '';
@@ -138,27 +138,34 @@ class Handle extends BaseHandle {
             newHTML += `<td>${book.CategoryCode}</td>`;
             newHTML += `<td>${book.UnitPrice}</td>`;
             newHTML += `<td>${book.Quantity}</td>`;
-            newHTML +=`<td><img width="150" height="150" src="/upload/${book.img}"</td>`
-
+            newHTML += `<td><img width="150" height="150" src="${book.img}"></td>`
             newHTML += `<td>
-                        <a href="/books/update?BookCode=${book.BookCode}" class="btn btn-primary">addToCart</a>
-                       </td>`;
-            newHTML += '</tr>'
+                            <a href="/books/update?BookCode=${book.BookCode}" class="btn btn-primary">Add to Basket</a>
+                        </td>`;
+            newHTML += '</tr>';
         });
 
         html = html.replace('{list-book}', newHTML)
         res.write(html)
-        res.end();
 
+        res.end();
     }
 
     async showFormLogin(req, res) {
-        let html = await this.getTemplate('./src/login.html');
+        let html = await this.getTemplate('./src/loginAdmin.html');
         res.write(html)
         res.end();
     }
 
-    async login(req, res) {
+    async showFormLoginC(req, res) {
+        let html = await this.getTemplate('./src/loginClient.html');
+        res.write(html)
+        res.end();
+    }
+
+
+
+    async loginA(req, res) {
         let data = '';
         req.on('data', chunk => {
             data += chunk
@@ -189,7 +196,60 @@ class Handle extends BaseHandle {
 
     async loginAdmin(req, res) {
         if (req.method === 'GET') {
-            fs.readFile('./src/login.html', "utf-8", (err, loginHtml) => {
+            fs.readFile('./src/loginAdmin.html', "utf-8", (err, loginHtml) => {
+                if (err) {
+                    console.log(err.message);
+                }
+                res.writeHead(200, {'Content-Type': 'text/html'});
+
+                res.write(loginHtml);
+                res.end();
+            });
+        } else {
+            let dataLogin = '';
+            req.on('data', chunk => {
+                dataLogin += chunk;
+            });
+            req.on('end', async () => {
+                const user = qs.parse(dataLogin);
+                await userService.login(user, res);
+            });
+        }
+    }
+
+
+    async loginC(req, res) {
+        let data = '';
+        req.on('data', chunk => {
+            data += chunk
+        })
+        req.on('end', async () => {
+            let dataForm = qs.parse(data);
+            let sql = `SELECT CodeKH, NameKH, Address, Phone FROM Client WHERE Phone = '${dataForm.Phone}' AND CodeKH= '${dataForm.CodeKH}'`;
+            let result = await this.querySQL(sql);
+            if (result.length == 0) {
+                res.writeHead(301, {Location: '/books/client'})
+                return res.end();
+            } else {
+
+                let nameFileSessions1 = result[0].BookName + '.txt';
+                let dataSession = JSON.stringify(result[0]);
+
+                await this.writeFile('./sessions/' + nameFileSessions1, dataSession)
+
+                res.setHeader('Set-Cookie','u_user=' + result[0].BookName);
+
+                res.writeHead(301, {Location: '/books/loginC'});
+                return res.end()
+
+            }
+
+        })
+    }
+
+    async loginClient(req, res) {
+        if (req.method === 'GET') {
+            fs.readFile('./src/loginClient.html', "utf-8", (err, loginHtml) => {
                 if (err) {
                     console.log(err.message);
                 }
@@ -233,11 +293,7 @@ class Handle extends BaseHandle {
                 newHTML += `<td>${book.CategoryCode}</td>`;
                 newHTML += `<td>${book.UnitPrice}</td>`;
                 newHTML += `<td>${book.Quantity}</td>`;
-                newHTML += `<td><img src="${book.img}" alt="asdasd">dasdasd </td>`
-                newHTML += `<td>
-                            <a onclick=" return confirm('Are you sure you want to delete this user?')" href="/books/delete?BookCode=${book.BookCode}" class="btn btn-danger">Delete</a>
-                            <a href="/books/update?BookCode=${book.BookCode}" class="btn btn-primary">Update</a>
-                        </td>`;
+                newHTML += `<td><img width="150" height="150" src="${book.img}"></td>`
                 newHTML += '</tr>';
             });
 
@@ -246,6 +302,28 @@ class Handle extends BaseHandle {
             res.end();
         })
     }
+
+    async register(req,res){
+        if (req.method==="GET"){
+            let html= await this.getTemplate('C:\\CASE_STYDY_BAN_SACH_ONLINE\\src\\register.html');
+            res.write(html);
+            res.end();
+        }else{
+            let data='';
+            req.on('data', chunk=>{
+                data += chunk
+            })
+            req.on('end',async ()=>{
+                let dataForm = qs.parse(data);
+                let sql = `insert into Book(BookCode, BookName, Author, CategoryCode, UnitPrice, Quantity, img) value ('${dataForm.BookCode}','${dataForm.BookName}','${dataForm.Author}','${dataForm.CategoryCode}','${dataForm.UnitPrice}','${dataForm.Quantity}','${dataForm.img}')`;
+                await this.querySQL(sql);
+                res.writeHead(301, { Location: "/" });
+                res.end();
+            })
+        }
+    }
+
+
 }
 
 module.exports = new Handle();
