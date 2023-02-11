@@ -41,42 +41,36 @@
             Add new user
         </div>
         <div class="card-body">
-            <form method="post" action='/books/edit?MaSach={MaSach}'>
+            <form method="post" action='/books/edit?BookCode={BookCode}'>
                 <div class="mb-3">
-                    <label class="form-label">MaSach</label>
-                    <input required  type="text" value="{MaSach}" disabled class="form-control" name="MaSach" id="MaSach" aria-describedby="">
+                    <label class="form-label">BookCode</label>
+                    <input required  type="text" value="{BookCode}" disabled class="form-control" name="BookCode" id="BookCode" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">TenSach</label>
-                    <input required type="text" value="{TenSach}" class="form-control" id="TenSach" name="TenSach" aria-describedby="">
+                    <label class="form-label">BookName</label>
+                    <input required type="text" value="{BookName}" class="form-control" id="BookName" name="BookName" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">TacGia</label>
-                    <input required type="text" value="{TacGia}" class="form-control" id="TacGia" name="TacGia" aria-describedby="">
+                    <label class="form-label">Author</label>
+                    <input required type="text" value="{Author}" class="form-control" id="Author" name="Author" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">MaTheLoai</label>
-                    <select class="form-select" name="MaTheLoai" aria-label="Default select example">
-                        {MaTheLoai}
+                    <label for='CategoryCode' class="form-label">CategoryCode</label>
+                    <select class="form-select" name="CategoryCode" id="CategoryCode" aria-label="Default select example">
+                        {CategoryCode}
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">MaNXB</label>
-                    <select class="form-select" name="MaNXB" aria-label="Default select example">
-                        {MaNXB}
-                    </select>
+                    <label class="form-label">UnitPrice</label>
+                    <input required type="number" value="{UnitPrice}" class="form-control" id="UnitPrice" name="UnitPrice" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">DonGiaBan</label>
-                    <input required type="text" value="{DonGiaBan}" class="form-control" id="DonGiaBan" name="DonGiaBan" aria-describedby="">
+                    <label class="form-label">Quantity</label>
+                    <input required type="text" value="{Quantity}" class="form-control" id="Quantity" name="Quantity" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">SoLuong</label>
-                    <input required type="text" value="{SoLuong}" class="form-control" id="SoLuong" name="SoLuong" aria-describedby="">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">SoTrang</label>
-                    <input required type="text" value="{SoTrang}" class="form-control" id="SoTrang" name="SoTrang" aria-describedby="">
+                    <label class="form-label">img</label>
+                    <input required type="text" value="{img}" class="form-control" id="img" name="img" aria-describedby="">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>

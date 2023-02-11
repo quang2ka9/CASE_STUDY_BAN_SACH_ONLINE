@@ -4,6 +4,8 @@ const qs = require("qs");
 const fs = require("fs");
 const cookie = require('cookie');
 
+
+
 class Handle extends BaseHandle {
     async showDashboard(req, res) {
         let html = await this.getTemplate('./src/dashboard.html');
@@ -13,27 +15,26 @@ class Handle extends BaseHandle {
 
     async showListBooks(req, res) {
         let html = await this.getTemplate('./src/views/books/list.html');
-        let sql = 'SELECT MaSach, TenSach, TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang FROM Sach';
-        let Sach = await this.querySQL(sql);
+        let sql = 'SELECT BookCode, BookName, Author, CategoryCode, UnitPrice, Quantity, img FROM Book';
+        let Book = await this.querySQL(sql);
         let newHTML = '';
-        Sach.forEach((sach, index) => {
+        Book.forEach((book, index) => {
             newHTML += '<tr>';
-            newHTML += `<td>${sach.MaSach}</td>`;
-            newHTML += `<td>${sach.TenSach}</td>`;
-            newHTML += `<td>${sach.TacGia}</td>`;
-            newHTML += `<td>${sach.MaTheLoai}</td>`;
-            newHTML += `<td>${sach.MaNXB}</td>`;
-            newHTML += `<td>${sach.DonGiaBan}</td>`;
-            newHTML += `<td>${sach.SoLuong}</td>`;
-            newHTML += `<td>${sach.SoTrang}</td>`;
+            newHTML += `<td>${book.BookCode}</td>`;
+            newHTML += `<td>${book.BookName}</td>`;
+            newHTML += `<td>${book.Author}</td>`;
+            newHTML += `<td>${book.CategoryCode}</td>`;
+            newHTML += `<td>${book.UnitPrice}</td>`;
+            newHTML += `<td>${book.Quantity}</td>`;
+            newHTML += `<td><img width="150" height="150" src="${book.img}"></td>`
             newHTML += `<td>
-                            <a onclick=" return confirm('Are you sure you want to delete this user?')" href="/books/delete?MaSach=${sach.MaSach}" class="btn btn-danger">Delete</a>
-                            <a href="/books/update?MaSach=${sach.MaSach}" class="btn btn-primary">Update</a>
+                            <a onclick=" return confirm('Are you sure you want to delete this user?')" href="/books/delete?BookCode=${book.BookCode}" class="btn btn-danger">Delete</a>
+                            <a href="/books/update?BookCode=${book.BookCode}" class="btn btn-primary">Update</a>
                         </td>`;
             newHTML += '</tr>';
         });
 
-        html = html.replace('{list-sach}', newHTML)
+        html = html.replace('{list-book}', newHTML)
         res.write(html)
 
         res.end();
@@ -42,9 +43,13 @@ class Handle extends BaseHandle {
 
     async deleteBooks(req, res) {
         let query = url.parse(req.url).query;
-        let MaSachs = qs.parse(query).MaSach;
-        let sql = `DELETE FROM Sach WHERE MaSach = '${MaSachs}'`;
+        let BookCodes = qs.parse(query).BookCode;
+        let sql1 = `DELETE FROM Detailhdb WHERE BookCode = '${BookCodes}'`;
+        await this.querySQL(sql1);
+        console.log("Delete detail success!!!")
+        let sql = `DELETE FROM Book WHERE BookCode = '${BookCodes}'`;
         await this.querySQL(sql);
+        console.log("Delete book success!!!")
         res.writeHead(301, {Location: '/books'});
         console.log("success delete!!")
         res.end();
@@ -64,7 +69,7 @@ class Handle extends BaseHandle {
         req.on('end', async () => {
             let dataForm = qs.parse(data);
             console.log(dataForm)
-            let sql = `insert into Sach(MaSach, TenSach, TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang) value ('${dataForm.MaSach}','${dataForm.TenSach}','${dataForm.TacGia}','${dataForm.MaTheLoai}','${dataForm.MaNXB}','${dataForm.DonGiaBan}','${dataForm.SoLuong}','${dataForm.SoTrang}')`;
+            let sql = `insert into Book(BookCode, BookName, Author, CategoryCode, UnitPrice, Quantity, img) value ('${dataForm.BookCode}','${dataForm.BookName}','${dataForm.Author}','${dataForm.CategoryCode}','${dataForm.UnitPrice}','${dataForm.Quantity}','${dataForm.img}')`;
             await this.querySQL(sql);
             res.writeHead(301, {Location: '/books'});
             res.end();
@@ -74,39 +79,26 @@ class Handle extends BaseHandle {
     async showFormUpdateBooks(req, res) {
         let html = await this.getTemplate('./src/views/books/update.html');
         let query = url.parse(req.url).query;
-        let MaSachs = qs.parse(query).MaSach;
-        let sql = `SELECT * FROM Sach WHERE MaSach = '${MaSachs}'`;
+        let BookCodes = qs.parse(query).BookCode;
+        let sql = `SELECT * FROM Book WHERE BookCode = '${BookCodes}'`;
         let data = await this.querySQL(sql);
-        html = html.replace('{MaSach}', data[0].MaSach)
-        html = html.replace('{TenSach}', data[0].TenSach)
-        html = html.replace('{TacGia}', data[0].TacGia)
-        html = html.replace('{DonGiaBan}', data[0].DonGiaBan)
-        html = html.replace('{SoLuong}', data[0].SoLuong)
-        html = html.replace('{SoTrang}', data[0].SoTrang)
+        console.log('Show BookCodes', BookCodes)
+        html = html.replace('{BookCode}', BookCodes)
+        html = html.replace('{BookName}', data[0].BookName)
+        html = html.replace('{Author}', data[0].Author)
+        html = html.replace('{UnitPrice}', data[0].UnitPrice)
+        html = html.replace('{Quantity}', data[0].Quantity)
+        html = html.replace('{img}', data[0].img)
 
-
-        sql = `SELECT * FROM TheLoai`;
-        let listTheLoai = await this.querySQL(sql);
-        let MaTheLoaiHTML = '';
-        listTheLoai.forEach(item => {
-            MaTheLoaiHTML += `
-            <option value="${item.MaTheLoai}">${item.TenTheLoai}</option>
+        sql = `SELECT * FROM Category` ;
+        let listCategory = await this.querySQL(sql);
+        let CategoryCodeHTML = '';
+        listCategory.forEach(item => {
+            CategoryCodeHTML += `
+            <option value="${item.CategoryCode}">${item.CategoryName}</option>
         `;
         })
-
-        html = html.replace('{MaTheLoai}', MaTheLoaiHTML)
-
-
-        sql = `SELECT * FROM NhaXuatBan`;
-        let listNhaXuatBan = await this.querySQL(sql);
-        let NhaXUatBanHTML = '';
-        listNhaXuatBan.forEach(item => {
-            NhaXUatBanHTML += `
-            <option value="${item.MaNXB}">${item.TenNXB}</option>
-        `;
-        })
-
-        html = html.replace('{MaNXB}', NhaXUatBanHTML)
+        html = html.replace('{CategoryCode}', CategoryCodeHTML)
 
         res.write(html);
         res.end();
@@ -114,84 +106,51 @@ class Handle extends BaseHandle {
 
     async updateBooks(req, res) {
         let query = url.parse(req.url).query;
-        let MaSach = qs.parse(query).MaSach;
-
+        let BookCode = qs.parse(query).BookCode;
+        console.log('data query', query)
+        console.log('data BookCode', BookCode)
         let data = '';
         req.on('data', chunk => {
             data += chunk
         })
+        console.log('data update', data)
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `CALL updateSach('${MaSach}','${dataForm.TenSach}', '${dataForm.TacGia}', '${dataForm.MaTheLoai}', '${dataForm.MaNXB}', '${dataForm.DonGiaBan}', '${dataForm.SoLuong}','${dataForm.SoTrang}')`;
+            console.log('data dataForm', dataForm)
+            let sql = `UPDATE book SET BookName = '${dataForm.BookName}', Author = '${dataForm.Author}', CategoryCode= '${dataForm.CategoryCode}', UnitPrice ='${dataForm.UnitPrice}',  Quantity = '${dataForm.Quantity}', img = '${dataForm.img}' WHERE BookCode = '${BookCode}'`
             await this.querySQL(sql);
-            res.writeHead(301, {Location: '/books'});
+
+            res.writeHead(301,{Location: "/books"});
             res.end();
         })
-    }
-
-
-    async searchBooks(req, res) {
-
-        let html = await this.getTemplate('./src/views/books/search.html');
-        let TenSachs = qs.parse(query).TenSach;
-
-        let sql = `SELECT MaSach, TenSach, TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang FROM Sach WHERE TenSach = '${TenSachs}'`;
-        let Sach = await this.querySQL(sql);
-
-        let newHTML = '';
-        Sach.forEach((sach, index) => {
-            newHTML += '<tr>';
-            newHTML += `<td>${sach.MaSach}</td>`;
-            newHTML += `<td>${sach.TenSach}</td>`;
-            newHTML += `<td>${sach.TacGia}</td>`;
-            newHTML += `<td>${sach.MaTheLoai}</td>`;
-            newHTML += `<td>${sach.MaNXB}</td>`;
-            newHTML += `<td>${sach.DonGiaBan}</td>`;
-            newHTML += `<td>${sach.SoLuong}</td>`;
-            newHTML += `<td>${sach.SoTrang}</td>`;
-            newHTML += `<td>
-                             <a onclick=" return confirm('Are you sure you want to delete this user?')" href="/books/delete?MaSach=${sach.MaSach}" class="btn btn-danger">Delete</a>
-                            <a href="/books/update?MaSach=${sach.MaSach}" class="btn btn-primary">Update</a>
-                       </td>`;
-            newHTML += '</tr>';
-        });
-
-        html = html.replace('{search-sach}', newHTML)
-        res.write(html)
-
-        res.end();
-    }
-
+    };
 
     async ShowAllBook(req, res) {
         let html = await this.getTemplate('./src/views/users/client.html');
-        let sql = 'SELECT MaSach, TenSach, TacGia, MaTheLoai, MaNXB, DonGiaBan, SoLuong, SoTrang FROM Sach';
-        let Sach = await this.querySQL(sql);
+        let sql = 'SELECT BookCode, BookName, Author, CategoryCode, UnitPrice, Quantity, img FROM Book';
+        let Book = await this.querySQL(sql);
         let newHTML = '';
-        Sach.forEach((sach, index) => {
+        Book.forEach((book, index) => {
             newHTML += '<tr>';
-            newHTML += `<td>${sach.MaSach}</td>`;
-            newHTML += `<td>${sach.TenSach}</td>`;
-            newHTML += `<td>${sach.TacGia}</td>`;
-            newHTML += `<td>${sach.MaTheLoai}</td>`;
-            newHTML += `<td>${sach.MaNXB}</td>`;
-            newHTML += `<td>${sach.DonGiaBan}</td>`;
-            newHTML += `<td>${sach.SoLuong}</td>`;
-            newHTML += `<td>${sach.SoTrang}</td>`;
+            newHTML += `<td>${book.BookCode}</td>`;
+            newHTML += `<td>${book.BookName}</td>`;
+            newHTML += `<td>${book.Author}</td>`;
+            newHTML += `<td>${book.CategoryCode}</td>`;
+            newHTML += `<td>${book.UnitPrice}</td>`;
+            newHTML += `<td>${book.Quantity}</td>`;
+            newHTML +=`<td><img width="150" height="150" src="/upload/${book.img}"</td>`
+
             newHTML += `<td>
-                        <a href="/books/update?MaSach=${sach.MaSach}" class="btn btn-primary">addToCart</a>
+                        <a href="/books/update?BookCode=${book.BookCode}" class="btn btn-primary">addToCart</a>
                        </td>`;
             newHTML += '</tr>'
         });
 
-        html = html.replace('{list-sach}', newHTML)
+        html = html.replace('{list-book}', newHTML)
         res.write(html)
-
         res.end();
 
     }
-
-
 
     async showFormLogin(req, res) {
         let html = await this.getTemplate('./src/login.html');
@@ -206,19 +165,19 @@ class Handle extends BaseHandle {
         })
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `SELECT MaNV, TenNV, GioiTinh, NgaySinh, DiaChi, DienThoai FROM NhanVien WHERE DienThoai= '${dataForm.DienThoai}' AND MaNV = '${dataForm.MaNV}'`;
+            let sql = `SELECT CodeNV, NameNV, Gender, Birthday, Address, Phone FROM Staff WHERE Phone = '${dataForm.Phone}' AND CodeNV = '${dataForm.CodeNV}'`;
             let result = await this.querySQL(sql);
             if (result.length == 0) {
                 res.writeHead(301, {Location: '/books/login'})
                 return res.end();
             } else {
 
-                let nameFileSessions = result[0].TenSach + '.txt';
+                let nameFileSessions = result[0].BookName + '.txt';
                 let dataSession = JSON.stringify(result[0]);
 
                 await this.writeFile('./sessions/' + nameFileSessions, dataSession)
 
-                res.setHeader('Set-Cookie','u_user=' + result[0].TenSach);
+                res.setHeader('Set-Cookie','u_user=' + result[0].BookName);
 
                 res.writeHead(301, {Location: '/books'});
                 return res.end()
@@ -236,7 +195,6 @@ class Handle extends BaseHandle {
                 }
                 res.writeHead(200, {'Content-Type': 'text/html'});
 
-                // loginHtml = loginHtml.replace('{notification}', '');
                 res.write(loginHtml);
                 res.end();
             });
@@ -252,6 +210,42 @@ class Handle extends BaseHandle {
         }
     }
 
+    async Search(req, res){
+        let data = '';
+        req.on('data', chunk => {
+            data += chunk
+        })
+        req.on('end', async () => {
+            let dataForm = qs.parse(data);
+            let param = dataForm.search;
+            console.log("param", param)
+            let sql = `SELECT * FROM Book WHERE BookName  like '%${param}%'`;
+            console.log("sql", sql)
+
+            let html = await this.getTemplate('./src/views/books/list.html');
+            let Book =  await this.querySQL(sql);
+            let newHTML = '';
+            Book.forEach((book, index) => {
+                newHTML += '<tr>';
+                newHTML += `<td>${book.BookCode}</td>`;
+                newHTML += `<td>${book.BookName}</td>`;
+                newHTML += `<td>${book.Author}</td>`;
+                newHTML += `<td>${book.CategoryCode}</td>`;
+                newHTML += `<td>${book.UnitPrice}</td>`;
+                newHTML += `<td>${book.Quantity}</td>`;
+                newHTML += `<td><img src="${book.img}" alt="asdasd">dasdasd </td>`
+                newHTML += `<td>
+                            <a onclick=" return confirm('Are you sure you want to delete this user?')" href="/books/delete?BookCode=${book.BookCode}" class="btn btn-danger">Delete</a>
+                            <a href="/books/update?BookCode=${book.BookCode}" class="btn btn-primary">Update</a>
+                        </td>`;
+                newHTML += '</tr>';
+            });
+
+            html = html.replace('{list-book}', newHTML)
+            res.write(html)
+            res.end();
+        })
+    }
 }
 
 module.exports = new Handle();

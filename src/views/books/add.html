@@ -43,20 +43,20 @@
         <div class="card-body">
             <form method="post" action="/books/store">
                 <div class="mb-3">
-                    <label class="form-label">MaSach</label>
-                    <input type="text" class="form-control" id="MaSach" name="MaSach" aria-describedby="">
+                    <label class="form-label">BookCode</label>
+                    <input type="text" class="form-control" id="BookCode" name="BookCode" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">TenSach</label>
-                    <input type="text" class="form-control" name="TenSach" id="TenSach" aria-describedby="">
+                    <label class="form-label">BookName</label>
+                    <input type="text" class="form-control" name="BookName" id="BookName" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">TacGia</label>
-                    <input type="text" class="form-control" name="TacGia" id="TacGia" aria-describedby="">
+                    <label class="form-label">Author</label>
+                    <input type="text" class="form-control" name="Author" id="Author" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">MaTheLoai</label>
-                    <select class="form-select" name="MaTheLoai" aria-label="Default select example">
+                    <label for="" class="form-label">CategoryCode</label>
+                    <select class="form-select" name="CategoryCode" aria-label="Default select example">
                         <option value="TL01">Bí quyết Cuộc sống</option>
                         <option value="TL02">Sách Tin học</option>
                         <option value="TL03">Thể Thao, Du lịch</option>
@@ -66,32 +66,16 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">MaNXB</label>
-                    <select class="form-select" name="MaNXB" aria-label="Default select example">
-                        <option value="NXB01">NXB Kim Đồng</option>
-                        <option value="NXB02">NXB Trẻ</option>
-                        <option value="NXB03">NXB Thăng Long</option>
-                        <option value="NXB04">NXB Nhã Nam</option>
-                        <option value="NXB05">NXB Giáo Dục</option>
-                        <option value="NXB06">NXB Fahasa</option>
-                        <option value="NXB07">NXB Phương Nam</option>
-                        <option value="NXB08">NXB ĐH GTVT</option>
-                        <option value="NXB09">NXB ĐH QGHN</option>
-                        <option value="NXB010">NXB Thủ Đô</option>
-
-                    </select>
+                    <label class="form-label"> UnitPrice</label>
+                    <input type="number" class="form-control" name="UnitPrice" id="UnitPrice" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">DonGiaBan</label>
-                    <input type="text" class="form-control" name="DonGiaBan" id="DonGiaBan" aria-describedby="">
+                    <label class="form-label">Quantity</label>
+                    <input type="number" class="form-control" name="Quantity" id="Quantity" aria-describedby="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">SoLuong</label>
-                    <input type="text" class="form-control" name="SoLuong" id="SoLuong" aria-describedby="">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">SoTrang</label>
-                    <input type="text" class="form-control" name="SoTrang" id="SoTrang" aria-describedby="">
+                    <label class="form-label">img</label>
+                    <input type="text" class="form-control" name="img" id="img" aria-describedby="">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
 
