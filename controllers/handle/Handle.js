@@ -172,7 +172,7 @@ class Handle extends BaseHandle {
         })
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `SELECT CodeNV, NameNV, Gender, Birthday, Address, Phone FROM Staff WHERE Phone = '${dataForm.Phone}' AND CodeNV = '${dataForm.CodeNV}'`;
+            let sql = `SELECT CodeNV, NameTK, Passwords, NameNV, Gender, Birthday, Address, Phone FROM Staff WHERE NameTK = '${dataForm.NameTK}' AND Passwords = '${dataForm.Passwords}'`;
             let result = await this.querySQL(sql);
             if (result.length == 0) {
                 res.writeHead(301, {Location: '/books/login'})
@@ -225,7 +225,7 @@ class Handle extends BaseHandle {
         })
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `SELECT CodeKH, NameKH, Address, Phone FROM Client WHERE Phone = '${dataForm.Phone}' AND CodeKH= '${dataForm.CodeKH}'`;
+            let sql = `SELECT CodeKH, NameTK, Passwords, NameKH, Address, Phone  FROM Client WHERE NameTK = '${dataForm.NameTK}' AND Passwords = '${dataForm.Passwords}'`;
             let result = await this.querySQL(sql);
             if (result.length == 0) {
                 res.writeHead(301, {Location: '/books/client'})
@@ -250,6 +250,30 @@ class Handle extends BaseHandle {
     async loginClient(req, res) {
         if (req.method === 'GET') {
             fs.readFile('./src/loginClient.html', "utf-8", (err, loginHtml) => {
+                if (err) {
+                    console.log(err.message);
+                }
+                res.writeHead(200, {'Content-Type': 'text/html'});
+
+                res.write(loginHtml);
+                res.end();
+            });
+        } else {
+            let dataLogin = '';
+            req.on('data', chunk => {
+                dataLogin += chunk;
+            });
+            req.on('end', async () => {
+                const user = qs.parse(dataLogin);
+                await userService.login(user, res);
+            });
+        }
+    }
+
+
+    async SignUpUser(req, res) {
+        if (req.method === 'GET') {
+            fs.readFile('C:\\CASE_STYDY_BAN_SACH_ONLINE\\src\\register.html', "utf-8", (err, loginHtml) => {
                 if (err) {
                     console.log(err.message);
                 }
@@ -315,9 +339,9 @@ class Handle extends BaseHandle {
             })
             req.on('end',async ()=>{
                 let dataForm = qs.parse(data);
-                let sql = `insert into Book(BookCode, BookName, Author, CategoryCode, UnitPrice, Quantity, img) value ('${dataForm.BookCode}','${dataForm.BookName}','${dataForm.Author}','${dataForm.CategoryCode}','${dataForm.UnitPrice}','${dataForm.Quantity}','${dataForm.img}')`;
+                let sql = `insert into Client(NameTK, Passwords, NameKH, Address, Phone ) value ('${dataForm.NameTK}','${dataForm.Passwords}','${dataForm.NameKH}''${dataForm.Address}','${dataForm.Phone}'`;
                 await this.querySQL(sql);
-                res.writeHead(301, { Location: "/" });
+                res.writeHead(301, {Location: '/'});
                 res.end();
             })
         }
@@ -327,6 +351,8 @@ class Handle extends BaseHandle {
 }
 
 module.exports = new Handle();
+
+
 
 
 

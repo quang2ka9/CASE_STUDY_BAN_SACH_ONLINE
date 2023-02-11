@@ -1,1 +1,1 @@
-{"CodeNV":"NV01","NameNV":"Trần Huy","Gender":"Nam","Birthday":"1990-09-10T17:00:00.000Z","Address":"Hà Nội","Phone":"0986868686"}
+{"CodeNV":2,"NameTK":"rete","Passwords":"reet","NameNV":"Thanh Tâm","Gender":"Nữ","Birthday":"1986-01-11T17:00:00.000Z","Address":"Bắc Ninh","Phone":"0979657676"}
