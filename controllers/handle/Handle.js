@@ -3,8 +3,9 @@ const url = require("url");
 const qs = require("qs");
 const fs = require("fs");
 const cookie = require('cookie');
+const {Query} = require("mysql/lib/protocol/sequences");
 
-
+let handlers = {};
 
 class Handle extends BaseHandle {
     async showDashboard(req, res) {
@@ -29,7 +30,7 @@ class Handle extends BaseHandle {
             newHTML += `<td><img width="150" height="150" src="${book.img}"></td>`
             newHTML += `<td>
                             <a onclick=" return confirm('Are you sure you want to delete this user?')" href="/books/delete?BookCode=${book.BookCode}" class="btn btn-danger">Delete</a>
-                            <a href="/books/update?BookCode=${book.BookCode}" class="btn btn-primary">Update</a>
+                            <a href="/books/update?BookCode=${book.BookCode}" class="btn btn-primary">Update</  
                         </td>`;
             newHTML += '</tr>';
         });
@@ -172,7 +173,7 @@ class Handle extends BaseHandle {
         })
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `SELECT CodeNV, NameNV, Gender, Birthday, Address, Phone FROM Staff WHERE Phone = '${dataForm.Phone}' AND CodeNV = '${dataForm.CodeNV}'`;
+            let sql = `SELECT CodeNV, NameTK, Passwords, NameNV, Gender, Birthday, Address, Phone FROM Staff WHERE NameTK = '${dataForm.NameTK}' AND Passwords = '${dataForm.Passwords}'`;
             let result = await this.querySQL(sql);
             if (result.length == 0) {
                 res.writeHead(301, {Location: '/books/login'})
@@ -205,15 +206,15 @@ class Handle extends BaseHandle {
                 res.write(loginHtml);
                 res.end();
             });
-        } else {
-            let dataLogin = '';
-            req.on('data', chunk => {
-                dataLogin += chunk;
-            });
-            req.on('end', async () => {
-                const user = qs.parse(dataLogin);
-                await userService.login(user, res);
-            });
+        // } else {
+        //     let dataLogin = '';
+        //     req.on('data', chunk => {
+        //         dataLogin += chunk;
+        //     });
+        //     req.on('end', async () => {
+        //         const user = qs.parse(dataLogin);
+        //         await userService.login(user, res);
+        //     });
         }
     }
 
@@ -225,7 +226,7 @@ class Handle extends BaseHandle {
         })
         req.on('end', async () => {
             let dataForm = qs.parse(data);
-            let sql = `SELECT CodeKH, NameKH, Address, Phone FROM Client WHERE Phone = '${dataForm.Phone}' AND CodeKH= '${dataForm.CodeKH}'`;
+            let sql = `SELECT CodeKH, NameTK, Passwords, NameKH, Address, Phone  FROM Client WHERE NameTK = '${dataForm.NameTK}' AND Passwords = '${dataForm.Passwords}'`;
             let result = await this.querySQL(sql);
             if (result.length == 0) {
                 res.writeHead(301, {Location: '/books/client'})
@@ -258,15 +259,39 @@ class Handle extends BaseHandle {
                 res.write(loginHtml);
                 res.end();
             });
-        } else {
-            let dataLogin = '';
-            req.on('data', chunk => {
-                dataLogin += chunk;
+        // } else {
+        //     let dataLogin = '';
+        //     req.on('data', chunk => {
+        //         dataLogin += chunk;
+        //     });
+        //     req.on('end', async () => {
+        //         const user = qs.parse(dataLogin);
+        //         await userService.login(user, res);
+        //     });
+        }
+    }
+
+
+    async SignUpUser(req, res) {
+        if (req.method === 'GET') {
+            fs.readFile('C:\\CASE_STYDY_BAN_SACH_ONLINE\\src\\register.html', "utf-8", (err, loginHtml) => {
+                if (err) {
+                    console.log(err.message);
+                }
+                res.writeHead(200, {'Content-Type': 'text/html'});
+
+                res.write(loginHtml);
+                res.end();
             });
-            req.on('end', async () => {
-                const user = qs.parse(dataLogin);
-                await userService.login(user, res);
-            });
+        // } else {
+        //     let dataLogin = '';
+        //     req.on('data', chunk => {
+        //         dataLogin += chunk;
+        //     });
+        //     req.on('end', async () => {
+        //         const user = qs.parse(dataLogin);
+        //         await userService.login(user, res);
+        //     });
         }
     }
 
@@ -315,18 +340,39 @@ class Handle extends BaseHandle {
             })
             req.on('end',async ()=>{
                 let dataForm = qs.parse(data);
-                let sql = `insert into Book(BookCode, BookName, Author, CategoryCode, UnitPrice, Quantity, img) value ('${dataForm.BookCode}','${dataForm.BookName}','${dataForm.Author}','${dataForm.CategoryCode}','${dataForm.UnitPrice}','${dataForm.Quantity}','${dataForm.img}')`;
+                let sql = `insert into Client(NameTK, Passwords, NameKH, Address, Phone ) value ('${dataForm.NameTK}','${dataForm.Passwords}','${dataForm.NameKH}''${dataForm.Address}','${dataForm.Phone}'`;
                 await this.querySQL(sql);
-                res.writeHead(301, { Location: "/" });
+                res.writeHead(301, {Location: '/'});
                 res.end();
             })
         }
     }
 
+    async showCart(req, res){
+        let cookies = req.headers.cookie;
+        let account = cookie.parse(cookies).u_user;
+        let idAccount = await this.querySQL(`select CodeKH from Client where NameTK = '${account}'`);
+        idAccount = idAccount[0].CodeNV;
+        let html = await this.getTemplate('./src/views/books/client.html');
+        let sql = `select Bill.NumberHDB, DetailHDB.BookCode, Client.NameKH, Category.CategoryName, Book.img, Book.UnitPrice from(
+        select Bill.CodeNV, Bill.NumberHDB, DetailHDB.BookCode, Book.BookName, Book.img, Category.CategoryName, DetailHDB.SellNumber from Bill
+        join DetailHDB  on Bill.NumberHDB = DetailHDB.NumberHDB
+        join Book on Book.BookCode = DetailHDB.BookCode
+        join Category on Category.CategoryCode = Book.idCategoriesCode
+        join Client on Client.CodeNV = Bill.CodeNV
+        ) where Bill.idAccount = '${idAccount}';`
+        let htmlP ='';
+        this.querySQL(sql).then
+    }
 
 }
 
+
+
+
 module.exports = new Handle();
+
+
 
 
 

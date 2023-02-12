@@ -114,6 +114,12 @@ const server = http.createServer((req, res) => {
                 })
                 break;
 
+            case '/signup':
+                Handler.SignUpUser(req, res).catch(err => {
+                    console.log(err.message);
+                })
+                break;
+
             case '/register':
                 Handler.register(req, res).catch(err=>{
                     console.log(err.message);
