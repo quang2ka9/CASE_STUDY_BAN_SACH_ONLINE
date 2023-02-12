@@ -1,6 +1,6 @@
 const http = require('http');
 const url = require('url');
-const Handler = require('./controllers/handle/Handle');
+const Handler = require('./controllers/Handle');
 const qs = require("qs");
 const fs = require('fs')
 

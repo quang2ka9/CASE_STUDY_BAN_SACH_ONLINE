@@ -128,24 +128,20 @@ class Handle extends BaseHandle {
 
     async ShowAllBook(req, res) {
         let html = await this.getTemplate('./src/views/books/client.html');
-        let sql = 'SELECT BookCode, BookName, Author, CategoryCode, UnitPrice, Quantity, img FROM Book';
+        let sql = 'SELECT UnitPrice, img FROM Book';
         let Book = await this.querySQL(sql);
         let newHTML = '';
         Book.forEach((book, index) => {
-            newHTML += '<tr>';
-            newHTML += `<td>${book.BookCode}</td>`;
-            newHTML += `<td>${book.BookName}</td>`;
-            newHTML += `<td>${book.Author}</td>`;
-            newHTML += `<td>${book.CategoryCode}</td>`;
-            newHTML += `<td>${book.UnitPrice}</td>`;
-            newHTML += `<td>${book.Quantity}</td>`;
-            newHTML += `<td><img width="150" height="150" src="${book.img}"></td>`
-            newHTML += `<td>
-                            <a href="/books/update?BookCode=${book.BookCode}" class="btn btn-primary">Add to Basket</a>
-                        </td>`;
-            newHTML += '</tr>';
-        });
-
+            newHTML +=`<div class="col-3 text-center py-3">
+            <div>
+                <img width="200" height="200" src="${book.img}">
+            </div>
+           <div class="text-center ">
+                <p>${book.UnitPrice} VNĐ</p>
+                <button type="button" class="btn btn-outline-primary">Thêm vào giỏ hàng</button>
+            </div>
+        </div>`
+        })
         html = html.replace('{list-book}', newHTML)
         res.write(html)
 
