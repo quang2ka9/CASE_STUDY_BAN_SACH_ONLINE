@@ -3,8 +3,9 @@ const url = require("url");
 const qs = require("qs");
 const fs = require("fs");
 const cookie = require('cookie');
+const {Query} = require("mysql/lib/protocol/sequences");
 
-
+let handlers = {};
 
 class Handle extends BaseHandle {
     async showDashboard(req, res) {
@@ -29,7 +30,7 @@ class Handle extends BaseHandle {
             newHTML += `<td><img width="150" height="150" src="${book.img}"></td>`
             newHTML += `<td>
                             <a onclick=" return confirm('Are you sure you want to delete this user?')" href="/books/delete?BookCode=${book.BookCode}" class="btn btn-danger">Delete</a>
-                            <a href="/books/update?BookCode=${book.BookCode}" class="btn btn-primary">Update</a>
+                            <a href="/books/update?BookCode=${book.BookCode}" class="btn btn-primary">Update</  
                         </td>`;
             newHTML += '</tr>';
         });
@@ -205,15 +206,15 @@ class Handle extends BaseHandle {
                 res.write(loginHtml);
                 res.end();
             });
-        } else {
-            let dataLogin = '';
-            req.on('data', chunk => {
-                dataLogin += chunk;
-            });
-            req.on('end', async () => {
-                const user = qs.parse(dataLogin);
-                await userService.login(user, res);
-            });
+        // } else {
+        //     let dataLogin = '';
+        //     req.on('data', chunk => {
+        //         dataLogin += chunk;
+        //     });
+        //     req.on('end', async () => {
+        //         const user = qs.parse(dataLogin);
+        //         await userService.login(user, res);
+        //     });
         }
     }
 
@@ -258,15 +259,15 @@ class Handle extends BaseHandle {
                 res.write(loginHtml);
                 res.end();
             });
-        } else {
-            let dataLogin = '';
-            req.on('data', chunk => {
-                dataLogin += chunk;
-            });
-            req.on('end', async () => {
-                const user = qs.parse(dataLogin);
-                await userService.login(user, res);
-            });
+        // } else {
+        //     let dataLogin = '';
+        //     req.on('data', chunk => {
+        //         dataLogin += chunk;
+        //     });
+        //     req.on('end', async () => {
+        //         const user = qs.parse(dataLogin);
+        //         await userService.login(user, res);
+        //     });
         }
     }
 
@@ -282,15 +283,15 @@ class Handle extends BaseHandle {
                 res.write(loginHtml);
                 res.end();
             });
-        } else {
-            let dataLogin = '';
-            req.on('data', chunk => {
-                dataLogin += chunk;
-            });
-            req.on('end', async () => {
-                const user = qs.parse(dataLogin);
-                await userService.login(user, res);
-            });
+        // } else {
+        //     let dataLogin = '';
+        //     req.on('data', chunk => {
+        //         dataLogin += chunk;
+        //     });
+        //     req.on('end', async () => {
+        //         const user = qs.parse(dataLogin);
+        //         await userService.login(user, res);
+        //     });
         }
     }
 
@@ -347,8 +348,27 @@ class Handle extends BaseHandle {
         }
     }
 
+    async showCart(req, res){
+        let cookies = req.headers.cookie;
+        let account = cookie.parse(cookies).u_user;
+        let idAccount = await this.querySQL(`select CodeKH from Client where NameTK = '${account}'`);
+        idAccount = idAccount[0].CodeNV;
+        let html = await this.getTemplate('./src/views/books/client.html');
+        let sql = `select Bill.NumberHDB, DetailHDB.BookCode, Client.NameKH, Category.CategoryName, Book.img, Book.UnitPrice from(
+        select Bill.CodeNV, Bill.NumberHDB, DetailHDB.BookCode, Book.BookName, Book.img, Category.CategoryName, DetailHDB.SellNumber from Bill
+        join DetailHDB  on Bill.NumberHDB = DetailHDB.NumberHDB
+        join Book on Book.BookCode = DetailHDB.BookCode
+        join Category on Category.CategoryCode = Book.idCategoriesCode
+        join Client on Client.CodeNV = Bill.CodeNV
+        ) where Bill.idAccount = '${idAccount}';`
+        let htmlP ='';
+        this.querySQL(sql).then
+    }
 
 }
+
+
+
 
 module.exports = new Handle();
 
