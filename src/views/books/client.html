@@ -18,16 +18,16 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/books">ShowCart</a>
+            <a class="nav-link active" aria-current="page" href="#">ShowCart</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/books">EditCart</a>
+            <a class="nav-link active" aria-current="page" href="#">EditCart</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/books">AddCart</a>
+            <a class="nav-link active" aria-current="page" href="#">AddCart</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/books">DeleteCart</a>
+            <a class="nav-link active" aria-current="page" href="#">DeleteCart</a>
           </li>
         </ul>
         <form class="d-flex"  method="post" action="/books/search">
@@ -40,24 +40,32 @@
   <div class="card">
     <div class="card-header">
       Cart
-      <a href="/books/create" class="btn btn-success">+</a>
+      <a href="#" class="btn btn-success">$</a>
     </div>
     <div class="card-body">
       <table class="table">
-        <thead>
-        <tr>
-          <th scope="col">BookCode</th>
-          <th scope="col">BookName</th>
-          <th scope="col">Author</th>
-          <th scope="col">CategoryCode</th>
-          <th scope="col">UnitPrice</th>
-          <th scope="col">Quantity</th>
-          <th scope="col">img</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        {list-book}
+
+        <section class="main">
+          <div class="container">
+            <div class="row py-5">
+              {list-book}
+            </div>
+          </div>
+        </section>
+<!--        <thead>-->
+<!--        <tr>-->
+<!--          <th scope="col">BookCode</th>-->
+<!--          <th scope="col">BookName</th>-->
+<!--          <th scope="col">Author</th>-->
+<!--          <th scope="col">CategoryCode</th>-->
+<!--          <th scope="col">UnitPrice</th>-->
+<!--          <th scope="col">Quantity</th>-->
+<!--          <th scope="col">img</th>-->
+<!--          <th></th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        {list-book}-->
         </tbody>
       </table>
     </div>
