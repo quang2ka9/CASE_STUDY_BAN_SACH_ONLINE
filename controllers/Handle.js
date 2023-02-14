@@ -138,7 +138,7 @@ class Handle extends BaseHandle {
             </div>
            <div class="text-center ">
                 <p>${book.UnitPrice} VNĐ</p>
-                <button type="button" class="btn btn-outline-primary">Thêm vào giỏ hàng</button>
+                <button type="button" class="btn btn-outline-warning">Thêm vào giỏ</button>
             </div>
         </div>`
         })
@@ -202,15 +202,7 @@ class Handle extends BaseHandle {
                 res.write(loginHtml);
                 res.end();
             });
-        // } else {
-        //     let dataLogin = '';
-        //     req.on('data', chunk => {
-        //         dataLogin += chunk;
-        //     });
-        //     req.on('end', async () => {
-        //         const user = qs.parse(dataLogin);
-        //         await userService.login(user, res);
-        //     });
+
         }
     }
 
@@ -255,15 +247,7 @@ class Handle extends BaseHandle {
                 res.write(loginHtml);
                 res.end();
             });
-        // } else {
-        //     let dataLogin = '';
-        //     req.on('data', chunk => {
-        //         dataLogin += chunk;
-        //     });
-        //     req.on('end', async () => {
-        //         const user = qs.parse(dataLogin);
-        //         await userService.login(user, res);
-        //     });
+
         }
     }
 
@@ -279,15 +263,7 @@ class Handle extends BaseHandle {
                 res.write(loginHtml);
                 res.end();
             });
-        // } else {
-        //     let dataLogin = '';
-        //     req.on('data', chunk => {
-        //         dataLogin += chunk;
-        //     });
-        //     req.on('end', async () => {
-        //         const user = qs.parse(dataLogin);
-        //         await userService.login(user, res);
-        //     });
+
         }
     }
 
